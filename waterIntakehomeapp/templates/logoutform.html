@@ -1,0 +1,34 @@
+{% extends 'layout/base-layout.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card  m-3 border border-info rounded">
+                <div class="card-body  bg-light">
+                    {% if user.is_authenticated %}
+                    <p class="mx-3 my-4 lead text-center">Are sure you want to logout <b>"<span class="text-danger">{{user.username}}</span>"</b></p>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                
+                            <input type="submit" value="logout" class="btn btn-danger mx-auto d-block">
+                        </form>
+
+                    {% else %}
+
+                <h3 class="text-danger my-4 text-center">You are not logged yet!</h3>
+                <a href="{% url 'loginpage' %}" class="d-flex align-items-center justify-content-center">Back to loginpage</a>
+                
+                {% endif %}
+                  
+                </div>
+              </div>
+            
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

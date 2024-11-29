@@ -1,0 +1,157 @@
+{% extends 'layout/base-layout.html' %} 
+
+{% block static %}
+
+ {% load static %} 
+
+ {%endblock %}
+{% block style %}
+
+<style>
+  li {
+    list-style: none;
+  }
+
+  body {
+    background: url("{% static 'image6.png' %}") no-repeat center;
+    background-size: cover;
+    min-height: 100vh;
+  }
+  #listTable{
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+  }
+
+  .deleteModal{
+    border: none;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+  }
+
+
+</style>
+
+{% endblock %} 
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row mt-5">
+    <div class="col-12 mt-5" id="listCard">
+      <div class="card m-3 border rounded" id="listTable">
+        <h2 class="card-header text-info text-center">Water Intake List</h2>
+        <div class="card-body">
+          <table class="table table-bordered table-lg my-4 table">
+            <tr class="text-center text-primary table-secondary">
+              <th>Quantity</th>
+              <th>Time</th>
+              <th colspan="2">Actions</th>
+            </tr>
+            <tbody>
+              {% for product in page_obj %}
+              <tr class="p-2 text-center">
+                <td class="h5">{{ product.quantity}} L</td>
+                <td class="h5">{{product.date |date:"d M, Y"}}&nbsp;&nbsp;{{product.time}}</td>
+                <td>
+                  <a
+                    href="{% url 'edit' product.id %}"
+                    id="listBtn"
+                    class="btn btn-success btn-sm"
+                    >Edit</a
+                  >
+                </td>
+                <td>
+                  <a
+                    href="#"
+                    data-target="#deleteModal{{product.id}}"
+                    data-toggle="modal"
+                    id="listBtn"
+                    class="btn btn-danger btn-sm"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+              <!--Here the 'deleteModal' added with id so each movie uniquely identified-->
+              <div class="modal fade" id="deleteModal{{product.id}}">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content deleteModal">
+                    <div class="modal-body text-center ">
+                      <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                      </button>
+                      <h4 class="modal-title text-danger mt-4">
+                        Are you sure want to delete?
+                      </h4>
+                      <div class="mb-4 mt-4 text-center">
+                        <a
+                          href="{% url 'delete' product.id %}"
+                          class="btn btn-success btn-sm mr-3"
+                          style="border-radius: 20px; padding: 4px 15px"
+                          >Confirm</a
+                        >
+                        <button
+                          class="btn btn-danger btn-sm"
+                          class="close"
+                          data-dismiss="modal"
+                          style="border-radius: 20px; padding: 4px 15px"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center pagination-sm">
+          {% if page_obj.has_previous %}
+
+          <li class="page-item">
+            <a href="?page=1" class="page-link">&laquo; first</a>
+          </li>
+          <li class="page-item">
+            <a
+              href="?page={{ page_obj.previous_page_number }}"
+              class="page-link"
+              aria-label="previous"
+              >&laquo; previous</a
+            >
+          </li>
+          {% endif %} 
+          {% for page_number in page_obj.paginator.get_elided_page_range %} 
+          {% if page_obj.number == page_number %}
+          <li class="page-item">
+            <span class="page-link">{{ page_number }}</span>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a href="?page={{ page_number }}" class="page-link"
+              >{{ page_number }}</a
+            >
+          </li>
+          {% endif %} 
+          {% endfor %} 
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link"
+              >next &raquo;</a
+            >
+          </li>
+          <li class="page-item">
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link"
+              >last &raquo;</a
+            >
+          </li>
+
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

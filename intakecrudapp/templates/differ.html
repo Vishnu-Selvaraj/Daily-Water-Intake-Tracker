@@ -1,0 +1,118 @@
+{% extends 'layout/base-layout.html' %}
+
+{% block static %}
+{% load static %}
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    #navbar{
+        background-color: rgb(246, 243, 243);
+        
+        z-index: 1;
+      }
+
+
+    li{
+        list-style: none;
+    }
+
+
+    body{
+            background: url("{% static 'image7.png' %}") no-repeat top;
+            background-size: cover;
+            min-height: 100vh;
+            
+        }
+    #DiffForm{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            
+    }
+    #DiffCard{
+        background-color: rgba(255,255,255, 0.8);
+        border-radius: 20px;
+    }
+
+
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12 col-sm-10 col-md-8" id="DiffForm">
+            <div class="card" id="DiffCard">
+                <h2 class="card-header text-info text-center">Find the Difference in Water Intake Between Two Dates</h2>
+                <div class="card-body">
+
+                    <!--Code starts here-->
+
+                    <form id="date-difference-form" class="my-4 mx-5">
+                        <div class="form-group">
+                            <label for="start-date">Select Start date</label>
+                            <input type="date" id="start-date" name="start_date" class="form-control form-control-sm my-2">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">Select End date</label>
+                            <input type="date" id="end-date" name="end_date" class="form-control form-control-sm my-2">
+                        </div>
+                        <button type="submit" id="calculate-difference" class="btn btn-primary btn-sm btn-block my-4">Find Difference</button>
+                    </form>
+                    <div id="result" class="my-4 mx-5 text-success font-weight-bold"></div>
+
+                    <!--Code Ends here-->
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('#date-difference-form').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var startDate = $('#start-date').val();
+        var endDate = $('#end-date').val();
+
+        if (startDate && endDate) {
+            $.ajax({
+                url: "{% url 'calculate' %}",
+                type: 'GET',
+                data: {
+                    'start_date': startDate,
+                    'end_date': endDate
+                },
+                success: function(data) {
+                    if (data.error) {
+                        $('#result').text(data.error);
+                    } else {
+                        $('#result').text('Your total water intake difference: ' + data.difference + ' L');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#result').text('An error occurred: ' + error);
+                }
+            });
+        } else {
+            $('#result').text('Please select both start and end dates.');
+        }
+    });
+});
+</script>
+
+
+{% endblock %}
+

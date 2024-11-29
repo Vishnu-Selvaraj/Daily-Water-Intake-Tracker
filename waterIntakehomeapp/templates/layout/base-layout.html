@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Water Intake Management Site</title>
+    {% block static %} {
+      % load static %} 
+    {% endblock %}
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // This code is used to show active class in navbar
+      $(document).ready(function () {
+        $("li.active").removeClass("active").removeAttr("aria-current");
+        $('a[href="' + location.pathname + '"]')
+          .closest("li")
+          .addClass("active")
+          .attr("aria-current", "page");
+      });
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      #logoutBody {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+      }
+      #navbar {
+        background-color: rgba(255, 255, 255, 0.7);
+
+        z-index: 1;
+      }
+
+      #navbarNav ul li.active .nav-link {
+        color: #17a2b8 !important;
+        text-shadow: 0.1px 0.1px #17a2b8 !important;
+      }
+
+      @media screen and (max-width: 992px) {
+        #navbar ul li .nav-link {
+          transition: color 0.4s, background-color 0.4s,
+            text-shadow 0.5s ease-in-out, box-shadow 0.4s;
+          border-radius: 20px;
+        }
+        #navbar ul li .nav-link:hover {
+          color: #17a2b8;
+          text-shadow: 0.5px 0.5px 1px #17a2b8;
+        }
+      }
+
+      @media screen and (min-width: 993px) {
+        #navbarNav ul li.active .nav-link {
+          border-radius: 20px !important;
+          padding: 4px 10px !important;
+          color: #fff !important ;
+          background-color: rgba(23, 162, 184, 0.65) !important;
+          box-shadow: 0px 0px 1px #101010 !important;
+        }
+        #navbar ul li .nav-link {
+          transition: color 0.4s, background-color 0.4s,
+            text-shadow 1s ease-in-out, box-shadow 0.4s, border-radius 0.4s ease;
+          padding: 4px 10px;
+          border-radius: 20px;
+        }
+        /*Navbar hover effct*/
+        #navbar ul li .nav-link:hover {
+          border-radius: 20px;
+          padding: 4px 10px;
+          color: #fff !important ;
+          background-color: rgba(23, 162, 184, 0.65);
+          box-shadow: 0px 0px #fff;
+        }
+      }
+    </style>
+
+    {% block style %} {% endblock %}
+  </head>
+
+  <body>
+    <!------------------Navbar start------------------------>
+    <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+      <a
+        class="navbar-brand font-weight-bold text-info"
+        href="{% url 'loginpage' %}"
+        >Daily Water Intake Tracker</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'loginpage' %}"
+              >Home<span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add' %}"
+              >Add Daily Water Intake</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'list' %}">View List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'calc' %}">Find Difference</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="#logoutModal" data-toggle="modal"
+              >Logout</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <!------------------Navbar end------------------------>
+
+    <!------------------Logout Modal------------------------>
+    <div class="modal fade" id="logoutModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="logoutBody">
+          <div class="modal-body text-center">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title mt-4">Are you sure want to logout?</h4>
+            <div class="mb-4 mt-4 text-center">
+              <a
+                href="{% url 'logoutpage' %}"
+                class="btn btn-success btn-sm mr-3"
+                style="border-radius: 20px; padding: 4px 15px"
+                >Confirm</a
+              >
+              <button
+                class="btn btn-danger btn-sm"
+                class="close"
+                data-dismiss="modal"
+                style="border-radius: 20px; padding: 4px 15px"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block content %} 
+    {% endblock %}
+  </body>
+</html>

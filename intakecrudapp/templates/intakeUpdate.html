@@ -1,0 +1,72 @@
+{% extends 'layout/base-layout.html' %} 
+
+{% block static %}
+    {% load static %} 
+{% endblock %} 
+
+ {% block style %}
+
+<style>
+  li {
+    list-style: none;
+  }
+
+  body {
+    background: url("{% static 'image5.jpeg' %}") no-repeat top;
+    background-size: cover;
+    min-height: 100vh;
+  }
+  #updateForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .updateBtn {
+    margin-top: -6px;
+  }
+  #updateCard {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+  }
+
+  input[type="number"] {
+    border: 0.5px solid rgb(20, 173, 224);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+</style>
+
+{% endblock %} 
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8" id="updateForm">
+      <div class="card" id="updateCard">
+        <h2 class="card-header text-info text-center">Edit Water Intake</h2>
+        <div class="card-body">
+          <form
+            action=""
+            method="post"
+            class="d-flex align-items-center justify-content-center my-5"
+          >
+            {% csrf_token %}
+            {{form.as_ul}}
+
+            <button type="submit" class="btn btn-primary btn-sm mx-2 updateBtn">
+              Add
+            </button>
+            <a
+              href="{% url 'list' %}"
+              class="btn btn-secondary btn-sm updateBtn"
+              >Cancel</a
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
