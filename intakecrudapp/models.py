@@ -8,7 +8,7 @@ class WaterInke(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     quantity = models.FloatField()
     date = models.DateField(default=timezone.now().date())
-    time = models.TimeField(auto_now_add=True)
+    time = models.TimeField(default=timezone.localtime().now().time())
 
     class Meta:
         unique_together = ('user','date')
